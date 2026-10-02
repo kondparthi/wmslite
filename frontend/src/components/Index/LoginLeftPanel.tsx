@@ -1,97 +1,94 @@
 import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxesStacked, faChartLine, faGlobe, faShieldHalved, faTruckFast } from '@fortawesome/free-solid-svg-icons';
 
+/**
+ * Full-bleed warehouse-themed background for the login page.
+ * Pure SVG/CSS — no external image dependency, so it always renders
+ * regardless of network/CDN availability.
+ */
 const LoginLeftPanel = () => (
-  <>
-    <div
-      className="hidden lg:flex flex-col justify-between w-1/2 p-12 h-[100dvh] min-h-[700px] relative overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #002B5C 0%, #003A78 45%, #0072B8 100%)" }}
-      id="login-left-panel"
+  <div
+    className="fixed inset-0 overflow-hidden"
+    style={{ background: "linear-gradient(160deg, #001A3D 0%, #002B5C 40%, #003A78 70%, #0072B8 100%)" }}
+    aria-hidden="true"
+  >
+    {/* Abstract warehouse racking illustration */}
+    <svg
+      className="absolute inset-0 w-full h-full"
+      viewBox="0 0 1600 900"
+      preserveAspectRatio="xMidYMax slice"
+      style={{ opacity: 0.5 }}
     >
-      {/* Decorative backdrop: dot grid + soft glow orbs */}
-      <div
-        className="absolute inset-0 opacity-[0.15] pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(#7CD4FF 1px, transparent 1px)",
-          backgroundSize: "22px 22px",
-        }}
-      />
-      <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(0,159,227,0.35) 0%, rgba(0,159,227,0) 70%)" }} />
-      <div className="absolute bottom-[-6rem] left-[-4rem] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(124,212,255,0.22) 0%, rgba(124,212,255,0) 70%)" }} />
+      <defs>
+        <linearGradient id="rackFade" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#7CD4FF" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#7CD4FF" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {/* Receding rows of racking, three vanishing "aisles" */}
+      {[0, 1, 2].map((aisle) => {
+        const baseX = 120 + aisle * 480;
+        return (
+          <g key={aisle}>
+            {Array.from({ length: 6 }).map((_, row) => {
+              const y = 900 - row * 70;
+              const scale = 1 - row * 0.09;
+              const w = 360 * scale;
+              const x = baseX - w / 2 + 180;
+              return (
+                <rect
+                  key={row}
+                  x={x}
+                  y={y - 46 * scale}
+                  width={w}
+                  height={46 * scale}
+                  rx={4}
+                  fill="url(#rackFade)"
+                  stroke="#7CD4FF"
+                  strokeOpacity={0.25}
+                  strokeWidth={1}
+                />
+              );
+            })}
+          </g>
+        );
+      })}
+      {/* Pallet dots scattered on the racking */}
+      {Array.from({ length: 18 }).map((_, i) => {
+        const x = 140 + ((i * 97) % 1400);
+        const y = 760 - ((i * 53) % 420);
+        const s = 10 + (i % 3) * 4;
+        return (
+          <rect
+            key={i}
+            x={x}
+            y={y}
+            width={s}
+            height={s}
+            rx={2}
+            fill="#009FE3"
+            opacity={0.3 + (i % 3) * 0.1}
+          />
+        );
+      })}
+    </svg>
 
-      {/* Logo */}
-      <div className="relative z-10 flex items-center gap-3">
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-white shadow-lg">
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="#003A78"/>
-            <text x="4" y="23" fontFamily="Arial" fontWeight="800" fontSize="18" fill="#009FE3">dp</text>
-          </svg>
-        </div>
-        <div className="flex flex-col leading-tight">
-          <span className="text-white text-xl font-bold tracking-wide">Delaplex</span>
-          <span className="text-[#7CD4FF] text-xs font-medium tracking-widest uppercase">WMS Lite</span>
-        </div>
-      </div>
+    {/* Dot-grid overlay */}
+    <div
+      className="absolute inset-0 opacity-[0.12] pointer-events-none"
+      style={{
+        backgroundImage: "radial-gradient(#7CD4FF 1px, transparent 1px)",
+        backgroundSize: "26px 26px",
+      }}
+    />
 
-      {/* Center Content */}
-      <div className="relative z-10 space-y-9">
-        <div className="space-y-4">
-          <span
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase"
-            style={{ background: "rgba(124,212,255,0.14)", border: "1px solid rgba(124,212,255,0.35)", color: "#BEEBFF" }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]" />
-            Platform Online
-          </span>
-          <h1 className="text-white text-4xl font-bold leading-tight tracking-tight">
-            Warehouse Management,<br />Made Simple.
-          </h1>
-          <p className="text-blue-200/90 text-base leading-relaxed max-w-md">
-            End-to-end warehouse operations control — from inbound to outbound, inventory to billing, all in one platform.
-          </p>
-        </div>
+    {/* Soft glow orbs */}
+    <div className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(0,159,227,0.35) 0%, rgba(0,159,227,0) 70%)" }} />
+    <div className="absolute bottom-[-8rem] left-[-6rem] w-96 h-96 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(124,212,255,0.25) 0%, rgba(124,212,255,0) 70%)" }} />
+    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[36rem] h-[36rem] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(0,58,120,0.4) 0%, rgba(0,58,120,0) 70%)" }} />
 
-        {/* Feature Highlights */}
-        <div className="space-y-3">
-          {[
-            { icon: faBoxesStacked, title: "Inventory Control", sub: "Real-time tracking, cycle counts, adjustments" },
-            { icon: faTruckFast,    title: "Inbound & Outbound", sub: "ASN, putaway, wave planning, shipment orders" },
-            { icon: faChartLine,   title: "Labor & 3PL Billing", sub: "Track labor, manage billing and cross-docking" },
-            { icon: faGlobe,       title: "Multi-National & Localization", sub: "Multi-language, multi-currency, multi-warehouse" },
-          ].map(({ icon, title, sub }) => (
-            <div
-              key={title}
-              className="flex items-center gap-4 rounded-xl px-3 py-3 transition-colors"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
-            >
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "rgba(0,159,227,0.2)", border: "1px solid rgba(0,159,227,0.4)" }}
-              >
-                <FontAwesomeIcon icon={icon} className="text-sm" style={{ color: "#7CD4FF" }} />
-              </div>
-              <div>
-                <p className="text-white text-sm font-medium">{title}</p>
-                <p className="text-blue-300/80 text-xs">{sub}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="relative z-10 space-y-3">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: "rgba(0,159,227,0.2)" }}>
-            <FontAwesomeIcon icon={faShieldHalved} className="text-xs" style={{ color: "#7CD4FF" }} />
-          </div>
-          <span className="text-blue-300/80 text-xs">Enterprise-grade security &amp; compliance</span>
-        </div>
-        <p className="text-blue-400/70 text-xs">© 2026 WMS Lite by Delaplex. All rights reserved.</p>
-      </div>
-    </div>
-  </>
+    {/* Vignette so the centered card reads clearly on any viewport */}
+    <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, rgba(0,20,45,0) 35%, rgba(0,20,45,0.55) 100%)" }} />
+  </div>
 );
 
 export default LoginLeftPanel;

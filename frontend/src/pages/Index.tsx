@@ -3,12 +3,9 @@ import LoginRightPanel from "@/components/Index/LoginRightPanel";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-
-      <div className="flex w-full max-w-full">
+    <div className="relative min-h-dvh w-full overflow-hidden">
       <LoginLeftPanel />
       <LoginRightPanel />
-      </div>
     </div>
   );
 };
