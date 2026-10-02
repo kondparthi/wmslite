@@ -15,6 +15,9 @@ cd /opt/wmslite/backend
 echo "== Rebuilding frontend =="
 cd /opt/wmslite/frontend
 npm ci
+# This file isn't tracked in git (by design — it's deploy-environment config,
+# not source) so it has to be ensured on every build, not just the first one.
+echo "VITE_API_BASE_URL=/api" > .env
 npm run build
 
 echo "== Restarting backend service =="
