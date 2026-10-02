@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Delaplex Brand Palette ──
+       Cyan/Sky:  #009FE3  → hsl(199 100% 45%)
+       Navy Dark: #003A78  → hsl(214 100% 24%)
+    */
+    --background: 0 0% 100%;
+    --foreground: 214 100% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 214 100% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 214 100% 14%;
+    /* primary = Delaplex cyan */
+    --primary: 199 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    /* secondary = light cyan tint */
+    --secondary: 199 60% 94%;
+    --secondary-foreground: 214 100% 24%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 199 60% 94%;
+    --accent-foreground: 214 100% 24%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    /* ring = brand cyan */
+    --ring: 199 100% 45%;
+    /* Charts */
+    --chart-1: 199 100% 45%;
+    --chart-2: 214 100% 24%;
+    --chart-3: 199 60% 65%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    /* Sidebar uses navy dark */
+    --sidebar-background: 214 100% 24%;
+    --sidebar-foreground: 199 60% 90%;
+    --sidebar-primary: 199 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 80% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 214 60% 30%;
+    --sidebar-ring: 199 100% 45%;
+  }
+
+  .dark {
+    --background: 214 100% 8%;
+    --foreground: 199 60% 95%;
+    --card: 214 100% 10%;
+    --card-foreground: 199 60% 95%;
+    --popover: 214 100% 10%;
+    --popover-foreground: 199 60% 95%;
+    --primary: 199 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 60% 20%;
+    --secondary-foreground: 199 60% 90%;
+    --muted: 214 60% 18%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 214 60% 20%;
+    --accent-foreground: 199 60% 90%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 40% 20%;
+    --input: 214 40% 20%;
+    --ring: 199 100% 45%;
+    --chart-1: 199 100% 45%;
+    --chart-2: 214 60% 50%;
+    --chart-3: 199 60% 65%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 214 100% 12%;
+    --sidebar-foreground: 199 60% 90%;
+    --sidebar-primary: 199 100% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 80% 18%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 214 40% 18%;
+    --sidebar-ring: 199 100% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
