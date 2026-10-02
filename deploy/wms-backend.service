@@ -1,0 +1,17 @@
+; systemd unit for the FastAPI backend — installed to /etc/systemd/system/wms-backend.service
+[Unit]
+Description=WMS Lite FastAPI backend
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/wmslite/backend
+EnvironmentFile=/opt/wmslite/backend/.env
+ExecStart=/opt/wmslite/backend/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=3
+User=root
+
+[Install]
+WantedBy=multi-user.target
