@@ -19,8 +19,8 @@ def verify_password(plain_password: str, password_hash: str) -> bool:
     return bcrypt.checkpw(plain_password.encode("utf-8"), password_hash.encode("utf-8"))
 
 
-def create_access_token(*, subject: str, extra_claims: Optional[dict] = None) -> str:
-    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+def create_access_token(*, subject: str, extra_claims: Optional[dict] = None, expires_minutes: Optional[int] = None) -> str:
+    expire = datetime.now(timezone.utc) + timedelta(minutes=expires_minutes or ACCESS_TOKEN_EXPIRE_MINUTES)
     payload = {"sub": subject, "exp": expire}
     if extra_claims:
         payload.update(extra_claims)

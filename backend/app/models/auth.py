@@ -31,3 +31,17 @@ class User(Base):
     mfa_enabled = Column(Boolean, default=False)
     locked = Column(Boolean, default=False)
     last_login_at = Column(DateTime, nullable=True)
+
+
+class PasswordResetCode(Base):
+    """One-time 6-digit code emailed to a user who forgot their password.
+    Only a hash of the code is stored; it expires and is single-use."""
+    __tablename__ = "password_reset_codes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    code_hash = Column(String(64), nullable=False)
+    expires_at = Column(DateTime, nullable=False)
+    attempts = Column(Integer, default=0)
+    used = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

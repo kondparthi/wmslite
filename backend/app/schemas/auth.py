@@ -7,6 +7,7 @@ class LoginRequest(BaseModel):
     tenant_id: str
     username: str  # accepts email or username
     password: str
+    remember_me: bool = False
 
 
 class UserRead(BaseModel):
@@ -25,3 +26,20 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserRead
+
+
+class ForgotPasswordRequest(BaseModel):
+    tenant_id: str
+    username: str  # email or username
+
+
+class VerifyResetCodeRequest(ForgotPasswordRequest):
+    code: str
+
+
+class ResetPasswordRequest(VerifyResetCodeRequest):
+    new_password: str
+
+
+class MessageResponse(BaseModel):
+    message: str

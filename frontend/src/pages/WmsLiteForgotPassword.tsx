@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import ForgotPasswordLeftPanel from "@/components/WmsLiteForgotPassword/ForgotPasswordLeftPanel";
 import IdentifyUserStep from "@/components/WmsLiteForgotPassword/IdentifyUserStep";
 import ResetPasswordStep from "@/components/WmsLiteForgotPassword/ResetPasswordStep";
@@ -14,6 +15,9 @@ const steps = [
 
 const WmsLiteForgotPassword = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  // Carried between the three steps (identify -> verify -> reset)
+  const [identity, setIdentity] = useState({ tenantId: "", username: "" });
+  const [code, setCode] = useState("");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -50,9 +54,22 @@ const WmsLiteForgotPassword = () => {
             </div>
 
             {/* Step Content */}
-            {currentStep === 1 && <IdentifyUserStep onNext={() => setCurrentStep(2)} />}
-            {currentStep === 2 && <VerificationCodeStep onNext={() => setCurrentStep(3)} onBack={() => setCurrentStep(1)} />}
-            {currentStep === 3 && <ResetPasswordStep onBack={() => setCurrentStep(2)} />}
+            {currentStep === 1 && (
+              <IdentifyUserStep
+                initial={identity}
+                onNext={(id) => { setIdentity(id); setCurrentStep(2); }}
+              />
+            )}
+            {currentStep === 2 && (
+              <VerificationCodeStep
+                identity={identity}
+                onNext={(c) => { setCode(c); setCurrentStep(3); }}
+                onBack={() => setCurrentStep(1)}
+              />
+            )}
+            {currentStep === 3 && (
+              <ResetPasswordStep identity={identity} code={code} onBack={() => setCurrentStep(2)} />
+            )}
 
             <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-4 flex gap-3">
               <div className="flex-shrink-0 mt-0.5">
@@ -65,11 +82,11 @@ const WmsLiteForgotPassword = () => {
             </div>
             <div className="flex flex-col items-center gap-2 pt-2">
               <div className="flex items-center gap-4 text-xs text-neutral-400">
-                <button className="hover:text-neutral-700">Privacy Policy</button>
+                <Link className="hover:text-neutral-700" to="/privacy-policy">Privacy Policy</Link>
                 <span>·</span>
-                <button className="hover:text-neutral-700">Terms of Use</button>
+                <Link className="hover:text-neutral-700" to="/terms-and-conditions">Terms of Use</Link>
                 <span>·</span>
-                <button className="hover:text-neutral-700">Support</button>
+                <Link className="hover:text-neutral-700" to="/support">Support</Link>
               </div>
               <p className="text-xs text-neutral-400">© 2026 WMS Lite by Delaplex</p>
             </div>

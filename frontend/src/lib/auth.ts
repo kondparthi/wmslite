@@ -25,28 +25,39 @@ interface LoginResponse {
   user: AuthUser;
 }
 
-export async function login(tenantId: string, usernameOrEmail: string, password: string): Promise<AuthUser> {
+/**
+ * "Remember me" ticked  -> token kept in localStorage (survives closing the
+ *                          browser; the backend issues a 30-day token).
+ * "Remember me" unticked -> token kept in sessionStorage (cleared when the
+ *                          browser/tab is closed; short backend session).
+ */
+export async function login(tenantId: string, usernameOrEmail: string, password: string, remember = false): Promise<AuthUser> {
   const res = await api.create<LoginResponse>("/auth/login", {
     tenant_id: tenantId,
     username: usernameOrEmail,
     password,
+    remember_me: remember,
   });
-  localStorage.setItem(TOKEN_KEY, res.access_token);
-  localStorage.setItem(USER_KEY, JSON.stringify(res.user));
+  logout(); // clear any previous session from either store
+  const store = remember ? localStorage : sessionStorage;
+  store.setItem(TOKEN_KEY, res.access_token);
+  store.setItem(USER_KEY, JSON.stringify(res.user));
   return res.user;
 }
 
 export function logout() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+  for (const store of [localStorage, sessionStorage]) {
+    store.removeItem(TOKEN_KEY);
+    store.removeItem(USER_KEY);
+  }
 }
 
 export function getToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
+  return localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY);
 }
 
 export function getStoredUser(): AuthUser | null {
-  const raw = localStorage.getItem(USER_KEY);
+  const raw = localStorage.getItem(USER_KEY) ?? sessionStorage.getItem(USER_KEY);
   if (!raw) return null;
   try {
     return JSON.parse(raw) as AuthUser;

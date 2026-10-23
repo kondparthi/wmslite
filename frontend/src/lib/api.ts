@@ -17,7 +17,7 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = localStorage.getItem("wms_lite_token");
+  const token = localStorage.getItem("wms_lite_token") ?? sessionStorage.getItem("wms_lite_token");
   const res = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
       "Content-Type": "application/json",
@@ -38,8 +38,10 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     if (res.status === 401 && !path.startsWith("/auth/login")) {
       // Session expired or token invalid — clear it and send the user back
       // to login rather than leaving them staring at broken screens.
-      localStorage.removeItem("wms_lite_token");
-      localStorage.removeItem("wms_lite_user");
+      for (const store of [localStorage, sessionStorage]) {
+        store.removeItem("wms_lite_token");
+        store.removeItem("wms_lite_user");
+      }
       if (typeof window !== "undefined" && window.location.pathname !== "/") {
         window.location.href = "/";
       }

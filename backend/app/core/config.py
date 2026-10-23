@@ -38,3 +38,18 @@ DEFAULT_TENANT_ID = os.getenv("DEFAULT_TENANT_ID", "DELAPLEX-WH01")
 DEFAULT_ADMIN_USERNAME = os.getenv("DEFAULT_ADMIN_USERNAME", "admin")
 DEFAULT_ADMIN_EMAIL = os.getenv("DEFAULT_ADMIN_EMAIL", "admin@delaplex.digital")
 DEFAULT_ADMIN_PASSWORD = os.getenv("DEFAULT_ADMIN_PASSWORD", "Admin@123")
+
+# --- Remember Me / password reset ---
+REMEMBER_ME_EXPIRE_DAYS = int(os.getenv("REMEMBER_ME_EXPIRE_DAYS", "30"))
+RESET_CODE_EXPIRE_MINUTES = int(os.getenv("RESET_CODE_EXPIRE_MINUTES", "10"))
+RESET_CODE_MAX_ATTEMPTS = int(os.getenv("RESET_CODE_MAX_ATTEMPTS", "5"))
+
+# --- Outgoing email (used for password-reset codes) ---
+# If SMTP_HOST is empty, no email is sent: the code is written to the backend
+# log instead (journalctl -u wms-backend) so the flow can still be tested.
+SMTP_HOST = os.getenv("SMTP_HOST", "")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+SMTP_FROM = os.getenv("SMTP_FROM", "") or SMTP_USERNAME
+SMTP_USE_SSL = os.getenv("SMTP_USE_SSL", "false").lower() == "true"  # true = implicit SSL (port 465)
